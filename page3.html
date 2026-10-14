@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Amount</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0B7A2F,#2563EB);
+padding:4px;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.container{
+width:100%;
+max-width:370px;
+background:#fff;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 8px 18px rgba(0,0,0,.18);
+}
+
+.header{
+background:linear-gradient(135deg,#0B7A2F,#2563EB);
+color:#fff;
+text-align:center;
+padding:16px 12px;
+}
+
+.header h2{
+font-size:28px;
+font-weight:800;
+margin-bottom:6px;
+}
+
+#applicantName{
+font-size:22px;
+font-weight:800;
+display:block;
+margin:6px 0;
+}
+
+.header p{
+font-size:15px;
+line-height:1.4;
+}
+
+.content{
+padding:12px;
+}
+
+.section-title{
+font-size:18px;
+font-weight:700;
+color:#0B7A2F;
+margin-bottom:10px;
+text-align:center;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+}
+
+.option{
+position:relative;
+height:74px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:2px solid #E5E7EB;
+border-radius:12px;
+cursor:pointer;
+background:#fff;
+transition:.2s;
+}
+
+.option:hover{
+border-color:#16A34A;
+background:#F8FFFA;
+}
+
+.option input{
+display:none;
+}
+
+.amount{
+font-size:20px;
+font-weight:900;
+color:#4B5563;
+text-align:center;
+}
+
+.checkmark{
+position:absolute;
+top:6px;
+right:6px;
+width:20px;
+height:20px;
+border:2px solid #C7C7C7;
+border-radius:50%;
+background:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.option.active{
+border-color:#16A34A;
+background:#F8FFFA;
+}
+
+.option.active .checkmark{
+background:#16A34A;
+border-color:#16A34A;
+}
+
+.option.active .checkmark::after{
+content:"✓";
+color:#fff;
+font-size:13px;
+font-weight:bold;
+}
+
+.full-width{
+grid-column:1 / -1;
+}
+
+.summary{
+margin-top:12px;
+padding:12px;
+background:#F9FAFB;
+border-radius:10px;
+}
+
+.summary p{
+font-size:14px;
+margin-bottom:5px;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#16A34A,#0B7A2F);
+color:#fff;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+.footer{
+text-align:center;
+padding:10px;
+color:#666;
+font-size:11px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h2>🎉 Congratulations</h2>
+
+<p><strong id="applicantName">Kipngetich Isaac</strong></p>
+
+<p>
+You're eligible for NYOTA Funds Limits.
+Kindly choose the amount you want and pay the processing fee to continue.
+</p>
+</div>
+
+<div class="content">
+
+<div class="section-title">
+💰 Select Your NYOTA Fund Amount
+</div>
+
+<div class="grid">
+
+<label class="option">
+<input type="radio" name="amount" value="22000" data-fee="350">
+<span class="checkmark"></span>
+<span class="amount">Ksh 22,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="30000" data-fee="450">
+<span class="checkmark"></span>
+<span class="amount">Ksh 30,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="40000" data-fee="550">
+<span class="checkmark"></span>
+<span class="amount">Ksh 40,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="50000" data-fee="650">
+<span class="checkmark"></span>
+<span class="amount">Ksh 50,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="65000" data-fee="800">
+<span class="checkmark"></span>
+<span class="amount">Ksh 65,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="75000" data-fee="910">
+<span class="checkmark"></span>
+<span class="amount">Ksh 75,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="85000" data-fee="1050">
+<span class="checkmark"></span>
+<span class="amount">Ksh 85,000</span>
+</label>
+
+<label class="option">
+<input type="radio" name="amount" value="110000" data-fee="1200">
+<span class="checkmark"></span>
+<span class="amount">Ksh 110,000</span>
+</label>
+
+<label class="option full-width">
+<input type="radio" name="amount" value="150000" data-fee="1500">
+<span class="checkmark"></span>
+<span class="amount">Ksh 150,000</span>
+</label>
+
+</div>
+
+<div class="summary">
+<p><strong>💵 Amount Selected:</strong> <span id="selected">Ksh ---</span></p>
+<p><strong>🧾 Processing Fee:</strong> <span id="fee">Ksh ---</span></p>
+
+<p style="margin-top:8px;color:#6B7280;">
+👆 Select an amount to see the processing fee.
+</p>
+</div>
+
+<button id="continueButton" type="button">
+➡️ Continue
+</button>
+
+</div>
+
+<div class="footer">
+🌟 NYOTA Funds Application
+</div>
+
+</div>
+
+<script>
+const radios=document.querySelectorAll('input[name="amount"]');
+
+let amount="";
+let fee="";
+
+const savedName=
+localStorage.getItem("fullName")||
+localStorage.getItem("fullname")||
+"Kipngetich Isaac";
+
+document.getElementById("applicantName").textContent=savedName;
+
+function updateSummary(selectedAmount,selectedFee){
+document.getElementById("selected").textContent=
+"Ksh "+Number(selectedAmount).toLocaleString();
+
+document.getElementById("fee").textContent=
+"Ksh "+Number(selectedFee).toLocaleString();
+}
+
+radios.forEach(radio=>{
+radio.addEventListener("change",function(){
+
+document.querySelectorAll(".option").forEach(opt=>opt.classList.remove("active"));
+this.closest(".option").classList.add("active");
+
+amount=this.value;
+fee=this.dataset.fee;
+
+updateSummary(amount,fee);
+
+/* Save immediately to localStorage */
+localStorage.setItem("selectedAmount",amount);
+localStorage.setItem("processingFee",fee);
+
+});
+});
+
+/* Restore previous selection */
+const savedAmount=localStorage.getItem("selectedAmount");
+
+if(savedAmount){
+const savedRadio=document.querySelector(`input[name="amount"][value="${savedAmount}"]`);
+if(savedRadio){
+savedRadio.checked=true;
+savedRadio.closest(".option").classList.add("active");
+amount=savedRadio.value;
+fee=savedRadio.dataset.fee;
+updateSummary(amount,fee);
+}
+}
+
+document.getElementById("continueButton").addEventListener("click",()=>{
+
+if(!amount){
+alert("Please select an amount.");
+return;
+}
+
+/* Save for payment.html */
+localStorage.setItem("selectedAmount",amount);
+localStorage.setItem("processingFee",fee);
+localStorage.setItem("loanAmount",amount);
+localStorage.setItem("requestedAmount",amount);
+
+window.location.href="payment.html";
+
+});
+</script>
+
+</body>
+</html>
