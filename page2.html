@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYOTA Fund Kenya - Step 2</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0B7A2F,#2563EB);
+padding:12px;
+}
+
+.container{
+max-width:420px;
+margin:auto;
+background:#fff;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+
+.header{
+background:linear-gradient(135deg,#0B7A2F,#2563EB);
+color:#fff;
+text-align:center;
+padding:22px 16px;
+}
+
+.header h1{
+font-size:22px;
+margin-bottom:4px;
+}
+
+.header p{
+font-size:14px;
+opacity:.95;
+}
+
+.content{
+padding:18px;
+}
+
+.title{
+font-size:22px;
+font-weight:bold;
+color:#0B7A2F;
+margin-bottom:6px;
+}
+
+.subtitle{
+font-size:14px;
+color:#666;
+margin-bottom:18px;
+}
+
+.option{
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px;
+border:2px solid #E5E7EB;
+border-radius:12px;
+margin-bottom:10px;
+cursor:pointer;
+transition:.2s;
+}
+
+.option:hover{
+border-color:#2563EB;
+background:#F8FAFF;
+}
+
+.option input{
+display:none;
+}
+
+.option.active{
+border-color:#2563EB;
+background:#EFF6FF;
+}
+
+.icon{
+font-size:26px;
+width:34px;
+text-align:center;
+}
+
+.text{
+flex:1;
+}
+
+.text h3{
+font-size:15px;
+margin-bottom:3px;
+color:#111827;
+}
+
+.text p{
+font-size:12px;
+color:#6B7280;
+line-height:1.35;
+}
+
+.checkmark{
+width:24px;
+height:24px;
+border:2px solid #C7C7C7;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:14px;
+font-weight:bold;
+color:white;
+background:white;
+transition:.2s;
+}
+
+.option.active .checkmark{
+background:#2563EB;
+border-color:#2563EB;
+}
+
+.option.active .checkmark::after{
+content:"✓";
+}
+
+.selected-box{
+margin-top:14px;
+padding:12px;
+border-radius:10px;
+background:#F3F4F6;
+font-size:14px;
+font-weight:bold;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:18px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#2563EB,#1D4ED8);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.95;
+}
+
+.footer{
+text-align:center;
+padding:16px;
+font-size:13px;
+color:#0B7A2F;
+font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🇰🇪 NYOTA FUND KENYA</h1>
+<p>Phase 2 Application - Step 2</p>
+</div>
+
+<div class="content">
+
+<div class="title">💰 Purpose of Funds</div>
+<p class="subtitle">Select the main purpose for which the funds will be used.</p>
+
+<form id="page2Form">
+
+<label class="option">
+<input type="radio" name="purpose" value="Business" required>
+<div class="icon">🏪</div>
+<div class="text">
+<h3>Business</h3>
+<p>Starting, expanding, or supporting a business.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Education">
+<div class="icon">🎓</div>
+<div class="text">
+<h3>Education</h3>
+<p>School fees, training, or education expenses.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Agriculture">
+<div class="icon">🌱</div>
+<div class="text">
+<h3>Agriculture</h3>
+<p>Farming, livestock, or agricultural activities.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Medical Expenses">
+<div class="icon">🏥</div>
+<div class="text">
+<h3>Medical Expenses</h3>
+<p>Healthcare, treatment, or medication expenses.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Housing">
+<div class="icon">🏠</div>
+<div class="text">
+<h3>Housing</h3>
+<p>Rent, accommodation, or housing improvements.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Emergency Expenses">
+<div class="icon">🚨</div>
+<div class="text">
+<h3>Emergency Expenses</h3>
+<p>Unexpected or urgent financial needs.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Household Needs">
+<div class="icon">🏡</div>
+<div class="text">
+<h3>Household Needs</h3>
+<p>General household and family expenses.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<label class="option">
+<input type="radio" name="purpose" value="Debt Repayment">
+<div class="icon">💳</div>
+<div class="text">
+<h3>Debt Repayment</h3>
+<p>Repayment of existing financial obligations.</p>
+</div>
+<div class="checkmark"></div>
+</label>
+
+<div class="selected-box">
+Selected Purpose: <span id="selectedPurpose">None</span>
+</div>
+
+<button type="submit">Continue to Step 3 →</button>
+
+</form>
+
+</div>
+
+<div class="footer">
+🇰🇪 NYOTA FUND KENYA
+</div>
+
+</div>
+
+<script>
+const options=document.querySelectorAll('input[name="purpose"]');
+const selectedText=document.getElementById("selectedPurpose");
+
+options.forEach(option=>{
+option.addEventListener("change",function(){
+document.querySelectorAll(".option").forEach(card=>card.classList.remove("active"));
+this.closest(".option").classList.add("active");
+selectedText.textContent=this.value;
+});
+});
+
+document.getElementById("page2Form").addEventListener("submit",function(e){
+e.preventDefault();
+
+const selected=document.querySelector('input[name="purpose"]:checked');
+
+if(!selected){
+alert("Please select the purpose of the funds.");
+return;
+}
+
+localStorage.setItem("purpose",selected.value);
+
+window.location.href="page3.html";
+});
+</script>
+
+</body>
+</html>
