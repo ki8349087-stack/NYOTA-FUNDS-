@@ -504,10 +504,10 @@ headers:{"Content-Type":"application/json"},
 body:JSON.stringify({transactionId})
 });
 
-const result=await readJson(response);
-const status=String(result.data?.status||"").toUpperCase();
+const result = await readJson(response);
+const status = String(result.status || "").toUpperCase();
 
-if(["SUCCESS","COMPLETED","CONFIRMED"].includes(status)){
+if (result.verified === true) {
 setMessage("Payment successful. Redirecting...","success");
 setLoading(true,"Payment Confirmed");
 setTimeout(()=>window.location.href="delivery.html",1000);
