@@ -1,4 +1,3 @@
-
 const express = require("express");
 const path = require("path");
 const crypto = require("crypto");
@@ -13,12 +12,16 @@ const transactions = new Map();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the same directory as server.js.
 app.use(express.static(path.join(__dirname)));
 
+// Home page.
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// Health check.
 app.get("/health", (req, res) => {
   res.json({
     success: true,
@@ -26,22 +29,82 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Start an STK Push using Paylor's documented API.
+// Explicit route for commitment.html.
+app.get("/commitment.html", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "commitment.html"),
+    (err) => {
+      if (err && !res.headersSent) {
+        console.error(
+          "Could not load commitment.html:",
+          err.message
+        );
+
+        res.status(404).send(
+          "commitment.html was not found in the deployed server directory."
+        );
+      }
+    }
+  );
+});
+
+// Explicit route for delivery.html.
+app.get("/delivery.html", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "delivery.html"),
+    (err) => {
+      if (err && !res.headersSent) {
+        console.error(
+          "Could not load delivery.html:",
+          err.message
+        );
+
+        res.status(404).send(
+          "delivery.html was not found in the deployed server directory."
+        );
+      }
+    }
+  );
+});
+
+// Explicit route for tax.html.
+app.get("/tax.html", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "tax.html"),
+    (err) => {
+      if (err && !res.headersSent) {
+        console.error(
+          "Could not load tax.html:",
+          err.message
+        );
+
+        res.status(404).send(
+          "tax.html was not found in the deployed server directory."
+        );
+      }
+    }
+  );
+});
+
+// Start an STK Push using Paylor's API.
 app.post("/stk-push", async (req, res) => {
   const { phone, amount } = req.body;
 
   if (!/^254[17]\d{8}$/.test(String(phone || ""))) {
     return res.status(400).json({
       success: false,
-      message: "Enter a valid Kenyan phone number starting with 254."
+      message:
+        "Enter a valid Kenyan phone number starting with 254."
     });
   }
 
   const paymentAmount = Number(amount);
 
-  if (!Number.isFinite(paymentAmount) ||
-      !Number.isInteger(paymentAmount) ||
-      paymentAmount <= 0) {
+  if (
+    !Number.isFinite(paymentAmount) ||
+    !Number.isInteger(paymentAmount) ||
+    paymentAmount <= 0
+  ) {
     return res.status(400).json({
       success: false,
       message: "Enter a valid whole-number payment amount."
@@ -68,9 +131,13 @@ app.post("/stk-push", async (req, res) => {
     description: "NYOTA Funds payment"
   };
 
-  // Paylor documents channelId as optional.
-  if (channelId) payload.channelId = channelId;
-  if (callbackUrl) payload.callbackUrl = callbackUrl;
+  if (channelId) {
+    payload.channelId = channelId;
+  }
+
+  if (callbackUrl) {
+    payload.callbackUrl = callbackUrl;
+  }
 
   try {
     const response = await fetch(
@@ -89,12 +156,19 @@ app.post("/stk-push", async (req, res) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || !data.transactionId) {
-      console.error("Paylor STK Push failed:", response.status);
+      console.error(
+        "Paylor STK Push failed:",
+        response.status
+      );
 
-      return res.status(response.ok ? 502 : response.status).json({
-        success: false,
-        message: data.message || "Paylor could not start the payment. Please try again."
-      });
+      return res
+        .status(response.ok ? 502 : response.status)
+        .json({
+          success: false,
+          message:
+            data.message ||
+            "Paylor could not start the payment. Please try again."
+        });
     }
 
     transactions.set(data.transactionId, {
@@ -106,14 +180,19 @@ app.post("/stk-push", async (req, res) => {
       success: true,
       transactionId: data.transactionId,
       status: data.status || "SENT",
-      message: "Payment prompt requested. Approve it on your phone if it arrives."
+      message:
+        "Payment prompt requested. Approve it on your phone if it arrives."
     });
   } catch (error) {
-    console.error("Paylor connection failed:", error.message);
+    console.error(
+      "Paylor connection failed:",
+      error.message
+    );
 
     return res.status(502).json({
       success: false,
-      message: "Could not connect to Paylor. Please try again."
+      message:
+        "Could not connect to Paylor. Please try again."
     });
   }
 });
@@ -122,7 +201,10 @@ app.post("/stk-push", async (req, res) => {
 app.post("/payment-status", async (req, res) => {
   const { transactionId } = req.body;
 
-  if (!transactionId || typeof transactionId !== "string") {
+  if (
+    !transactionId ||
+    typeof transactionId !== "string"
+  ) {
     return res.status(400).json({
       success: false,
       message: "A valid transaction ID is required."
@@ -135,7 +217,8 @@ app.post("/payment-status", async (req, res) => {
   if (!apiKey || !saved) {
     return res.status(404).json({
       success: false,
-      message: "Transaction not found in this server session. Please start again or contact support."
+      message:
+        "Transaction not found in this server session. Please start again or contact support."
     });
   }
 
@@ -155,14 +238,23 @@ app.post("/payment-status", async (req, res) => {
     if (!response.ok) {
       return res.status(502).json({
         success: false,
-        message: "Could not verify payment with Paylor."
+        message:
+          "Could not verify payment with Paylor."
       });
     }
 
-    const status = String(data.status || "PENDING").toUpperCase();
-    const amountMatches = Number(data.amount) === saved.amount;
-    const referenceMatches = data.reference === saved.reference;
-    const verified = status === "COMPLETED" &&
+    const status = String(
+      data.status || "PENDING"
+    ).toUpperCase();
+
+    const amountMatches =
+      Number(data.amount) === saved.amount;
+
+    const referenceMatches =
+      data.reference === saved.reference;
+
+    const verified =
+      status === "COMPLETED" &&
       amountMatches &&
       referenceMatches;
 
@@ -175,22 +267,35 @@ app.post("/payment-status", async (req, res) => {
         : "Payment is not yet verified as completed."
     });
   } catch (error) {
-    console.error("Paylor status check failed:", error.message);
+    console.error(
+      "Paylor status check failed:",
+      error.message
+    );
 
     return res.status(502).json({
       success: false,
-      message: "Could not check payment status. Please try again."
+      message:
+        "Could not check payment status. Please try again."
     });
   }
 });
 
-// Do not treat a callback as proof of payment until its
-// signature is verified using Paylor's official webhook rules.
+// Callback endpoint.
+// Do not treat callbacks as proof of payment until
+// Paylor's official signature verification is implemented.
 app.post("/callback", (req, res) => {
-  console.log("Paylor callback received; signature verification is not configured.");
-  res.status(200).json({ received: true });
+  console.log(
+    "Paylor callback received; signature verification is not configured."
+  );
+
+  res.status(200).json({
+    received: true
+  });
 });
 
+// Start server.
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`NYOTA Funds server listening on port ${PORT}`);
+  console.log(
+    `NYOTA Funds server listening on port ${PORT}`
+  );
 });
